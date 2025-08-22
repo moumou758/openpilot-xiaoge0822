@@ -199,7 +199,6 @@ class StartupAlert(Alert):
                      Priority.LOWER, VisualAlert.none, AudibleAlert.none, 5.),
 
 
-
 # ********** helper functions **********
 def get_display_speed(speed_ms: float, metric: bool) -> str:
   speed = int(round(speed_ms * (CV.MS_TO_KPH if metric else CV.MS_TO_MPH)))
@@ -267,7 +266,6 @@ def torque_nn_load_alert(CP: car.CarParams, CS: car.CarState, sm: messaging.SubM
       model_name,
       AlertStatus.userPrompt, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.prompt, 5.0)
-
 
 # *** debug alerts ***
 
@@ -378,7 +376,6 @@ def car_parser_result(CP: car.CarParams, CS: car.CarState, sm: messaging.SubMast
     results,
     AlertStatus.normal, AlertSize.small,
     Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., creation_delay=1.)
-
 
 EVENTS: dict[int, dict[str, Alert | AlertCallbackType]] = {
   # ********** events with no alerts **********
