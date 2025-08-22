@@ -110,7 +110,6 @@ DBC = CAR.create_dbc_map()
 
 STEER_THRESHOLD = 0.5
 
-
 if __name__ == "__main__":
   cars = []
   for platform in CAR:
