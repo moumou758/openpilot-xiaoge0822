@@ -146,18 +146,18 @@ PrimeAdWidget::PrimeAdWidget(QWidget* parent) : QFrame(parent) {
   main_layout->setContentsMargins(80, 90, 80, 60);
   main_layout->setSpacing(0);
 
-
-    QLabel *upgrade = new QLabel(tr("欢迎选购Mr.one"));
+  QLabel *upgrade = new QLabel(tr("欢迎选购 Mr.one"));
   upgrade->setStyleSheet("font-size: 75px; font-weight: bold;");
   main_layout->addWidget(upgrade, 0, Qt::AlignTop);
   main_layout->addSpacing(50);
 
-  QLabel *description = new QLabel(tr("胡萝卜是唯一支持高速NOA的软件版本，感谢机械小鸽"));
+  QLabel *description = new QLabel(tr("CarrotPilot是目前唯一支持高速NOA的软件版本，感谢 机械小鸽"));
   description->setStyleSheet("font-size: 56px; font-weight: light; color: white;");
   description->setWordWrap(true);
   main_layout->addWidget(description, 0, Qt::AlignTop);
 
   main_layout->addStretch();
+  main_layout->addSpacing(10);   // 新增：把“高级功能包括:”整体下移 10 px
 
   QLabel *features = new QLabel(tr("高级功能:"));
   features->setStyleSheet("font-size: 41px; font-weight: bold; color: #E5E5E5;");
