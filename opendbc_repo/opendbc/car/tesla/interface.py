@@ -3,7 +3,7 @@ from opendbc.car.interfaces import CarInterfaceBase
 from opendbc.car.tesla.carcontroller import CarController
 from opendbc.car.tesla.carstate import CarState
 from opendbc.car.tesla.values import TeslaSafetyFlags
-from opendbc.car.tesla.values import TeslaFlagsSP, TeslaSafetyFlagsSP
+from opendbc.car.tesla.vvalues import TeslaFlagsSP, TeslaSafetyFlagsSP
 
 
 class CarInterface(CarInterfaceBase):
