@@ -118,4 +118,3 @@ if __name__ == "__main__":
   cars.sort()
   for c in cars:
     print(c)
-
