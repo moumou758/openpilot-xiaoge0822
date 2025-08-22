@@ -960,8 +960,8 @@ EVENTS: dict[int, dict[str, Alert | AlertCallbackType]] = {
     ET.PERMANENT: Alert(
       "倒车中\n请注意周围环境",
       "",
-      AlertStatus.normal, AlertSize.none,
-      Priority.LOWEST, VisualAlert.none, AudibleAlert.reverseGear, .2, creation_delay=0.5),
+      AlertStatus.normal, AlertSize.full,
+      Priority.LOWEST, VisualAlert.none, AudibleAlert.none, .2, creation_delay=0.5),
     ET.SOFT_DISABLE: SoftDisableAlert("倒车中"),
     ET.NO_ENTRY: NoEntryAlert("倒车中"),
   },
