@@ -255,12 +255,15 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   sp_retain.setRetainSizeWhenHidden(true);
   setSizePolicy(sp_retain);
 
+  // ❌ 删除以下整段：不再根据 PrimeState 切换
+  /*
   QObject::connect(uiState()->prime_state, &PrimeState::changed, [this](PrimeState::Type type) {
     if (type == PrimeState::PRIME_TYPE_UNPAIRED) {
-      mainLayout->setCurrentIndex(0);  // Display "Pair your device" widget
+      mainLayout->setCurrentIndex(0);
     } else {
       popup->reject();
-      mainLayout->setCurrentIndex(1);  // Display Wi-Fi prompt widget
+      mainLayout->setCurrentIndex(1);
     }
   });
+  */
 }
