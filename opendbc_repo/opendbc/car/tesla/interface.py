@@ -3,6 +3,7 @@ from opendbc.car.interfaces import CarInterfaceBase
 from opendbc.car.tesla.carcontroller import CarController
 from opendbc.car.tesla.carstate import CarState
 from opendbc.car.tesla.values import TeslaSafetyFlags
+from opendbc.car.tesla.values import TeslaFlagsSP, TeslaSafetyFlagsSP
 
 
 class CarInterface(CarInterfaceBase):
@@ -30,5 +31,10 @@ class CarInterface(CarInterfaceBase):
       ret.vEgoStopping = 0.1
       ret.vEgoStarting = 0.1
       ret.stoppingDecelRate = 0.3
+
+    ret.flags |= TeslaFlagsSP.VIRTUAL_TORQUE_BLENDING.value
+
+    if ret.flags & TeslaFlagsSP.VIRTUAL_TORQUE_BLENDING:
+      ret.safetyParam |= TeslaSafetyFlagsSP.VIRTUAL_TORQUE_BLENDING
 
     return ret
