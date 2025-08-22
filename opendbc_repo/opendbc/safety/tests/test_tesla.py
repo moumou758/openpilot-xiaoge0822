@@ -1,16 +1,25 @@
 #!/usr/bin/env python3
 import unittest
 
+from parameterized import parameterized_class
+
 from opendbc.car.tesla.values import TeslaSafetyFlags
 from opendbc.car.structs import CarParams
 from opendbc.can.can_define import CANDefine
 from opendbc.safety.tests.libsafety import libsafety_py
 import opendbc.safety.tests.common as common
 from opendbc.safety.tests.common import CANPackerPanda
+from opendbc.tesla.vvalues import TeslaSafetyFlagsSP
 
 MSG_DAS_steeringControl = 0x488
 MSG_APS_eacMonitor = 0x27d
 MSG_DAS_Control = 0x2b9
+
+
+VIRTUAL_TORQUE_BLENDING_SAFETY_PARAM_SP = [
+  {"SAFETY_PARAM_SP": TeslaSafetyFlagsSP.DEFAULT},
+  {"SAFETY_PARAM_SP": TeslaSafetyFlagsSP.VIRTUAL_TORQUE_BLENDING},
+]
 
 
 class TestTeslaSafetyBase(common.PandaCarSafetyTest, common.AngleSteeringSafetyTest, common.LongitudinalAccelSafetyTest):
@@ -35,6 +44,8 @@ class TestTeslaSafetyBase(common.PandaCarSafetyTest, common.AngleSteeringSafetyT
   INACTIVE_ACCEL = 0.0
 
   packer: CANPackerPanda
+
+  SAFETY_PARAM_SP: int = 0
 
   @classmethod
   def setUpClass(cls):
@@ -96,6 +107,7 @@ class TestTeslaSafetyBase(common.PandaCarSafetyTest, common.AngleSteeringSafetyT
                                   self.safety.get_vehicle_speed_min, self.safety.get_vehicle_speed_max)
 
 
+@parameterized_class(VIRTUAL_TORQUE_BLENDING_SAFETY_PARAM_SP)
 class TestTeslaStockSafety(TestTeslaSafetyBase):
 
   LONGITUDINAL = False
@@ -103,6 +115,7 @@ class TestTeslaStockSafety(TestTeslaSafetyBase):
   def setUp(self):
     super().setUp()
     self.safety = libsafety_py.libsafety
+    self.safety.set_current_safety_param_sp(self.SAFETY_PARAM_SP)
     self.safety.set_safety_hooks(CarParams.SafetyModel.tesla, 0)
     self.safety.init_tests()
 
@@ -118,6 +131,7 @@ class TestTeslaStockSafety(TestTeslaSafetyBase):
       self.assertEqual(self._tx(self._long_control_msg(10, acc_state=self.acc_states["ACC_CANCEL_GENERIC_SILENT"], aeb_event=aeb_event)), aeb_event == 0)
 
 
+@parameterized_class(VIRTUAL_TORQUE_BLENDING_SAFETY_PARAM_SP)
 class TestTeslaLongitudinalSafety(TestTeslaSafetyBase):
   RELAY_MALFUNCTION_ADDRS = {0: (MSG_DAS_steeringControl, MSG_APS_eacMonitor, MSG_DAS_Control)}
   FWD_BLACKLISTED_ADDRS = {2: [MSG_DAS_steeringControl, MSG_APS_eacMonitor, MSG_DAS_Control]}
@@ -125,6 +139,7 @@ class TestTeslaLongitudinalSafety(TestTeslaSafetyBase):
   def setUp(self):
     super().setUp()
     self.safety = libsafety_py.libsafety
+    self.safety.set_current_safety_param_sp(self.SAFETY_PARAM_SP)
     self.safety.set_safety_hooks(CarParams.SafetyModel.tesla, TeslaSafetyFlags.LONG_CONTROL)
     self.safety.init_tests()
 
