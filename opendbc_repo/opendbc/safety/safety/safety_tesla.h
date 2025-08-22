@@ -2,12 +2,6 @@
 
 #include "safety_declarations.h"
 
-enum {
-  TESLA_PARAM_SP_VIRTUAL_TORQUE_BLENDING = 1,
-};
-
-static bool tesla_virtual_torque_blending;
-
 static bool tesla_longitudinal = false;
 static bool tesla_stock_aeb = false;
 
@@ -21,9 +15,6 @@ static void tesla_rx_hook(const CANPacket_t *to_push) {
       // Store it 1/10 deg to match steering request
       int angle_meas_new = (((GET_BYTE(to_push, 4) & 0x3FU) << 8) | GET_BYTE(to_push, 5)) - 8192U;
       update_sample(&angle_meas, angle_meas_new);
-      
-      const bool hands_on_level_check = (!tesla_virtual_torque_blending && (hands_on_level >= 3));
-      steering_disengage = hands_on_level_check || ((eac_status == 0) && (eac_error_code == 9));
     }
 
     // Vehicle speed
@@ -199,8 +190,6 @@ static safety_config tesla_init(uint16_t param) {
   const int TESLA_FLAG_LONGITUDINAL_CONTROL = 1;
   tesla_longitudinal = GET_FLAG(param, TESLA_FLAG_LONGITUDINAL_CONTROL);
 #endif
-
-  tesla_virtual_torque_blending = GET_FLAG(current_safety_param_sp, TESLA_PARAM_SP_VIRTUAL_TORQUE_BLENDING);
 
   tesla_stock_aeb = false;
 
