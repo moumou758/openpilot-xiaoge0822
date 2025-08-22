@@ -260,7 +260,6 @@ DevicePanel::DevicePanel(SettingsWindow *parent) : ListWidget(parent) {
     }
     });
 
-
   setStyleSheet(R"(
     #reboot_btn { height: 120px; border-radius: 15px; background-color: #2CE22C; }
     #reboot_btn:pressed { background-color: #24FF24; }
@@ -676,7 +675,6 @@ CarrotPanel::CarrotPanel(QWidget* parent) : QWidget(parent) {
   cruiseToggles->addItem(new CValueControl("MyDrivingMode", "驾驶模式选择", "1:经济,2:安全,3:普通,4:激进", 1, 4, 1));
   cruiseToggles->addItem(new CValueControl("MyDrivingModeAuto", "驾驶模式自动", "0:关闭,1:开启(仅普通模式)", 0, 1, 1));
   cruiseToggles->addItem(new CValueControl("TrafficLightDetectMode", "红绿灯检测模式", "0:无,1:仅停止,2:停走模式", 0, 2, 1));
-
   //cruiseToggles->addItem(new CValueControl("CruiseSpeedMin", "CRUISE: Speed Lower limit(10)", "Cruise control MIN speed", 5, 50, 1));
   //cruiseToggles->addItem(new CValueControl("AutoResumeFromGas", "GAS CRUISE ON: Use", "Auto Cruise on when GAS pedal released, 60% Gas Cruise On automatically", 0, 3, 1));
   //cruiseToggles->addItem(new CValueControl("AutoResumeFromGasSpeed", "GAS CRUISE ON: Speed(30)", "Driving speed exceeds the set value, Cruise ON", 20, 140, 5));
@@ -720,7 +718,6 @@ CarrotPanel::CarrotPanel(QWidget* parent) : QWidget(parent) {
   latLongToggles->addItem(new CValueControl("CruiseMaxVals5", "加速:110km/h(70)", "指定速度下所需加速度(x0.01m/s^2)", 1, 250, 5));
   latLongToggles->addItem(new CValueControl("CruiseMaxVals6", "加速:140km/h(60)", "指定速度下所需加速度(x0.01m/s^2)", 1, 250, 5));
   latLongToggles->addItem(new CValueControl("MaxAngleFrames", "最大转角帧数(89)", "89:默认, 仪表盘转向错误 85~87", 80, 100, 1));
-
   //latLongToggles->addItem(new CValueControl("AutoLaneChangeSpeed", "LaneChangeSpeed(20)", "", 1, 100, 5));
   //latLongToggles->addItem(new CValueControl("JerkStartLimit", "LONG: JERK START(10)x0.1", "Starting Jerk.", 1, 50, 1));
   //latLongToggles->addItem(new CValueControl("LongitudinalTuningApi", "LONG: ControlType", "0:velocity pid, 1:accel pid, 2:accel pid(comma)", 0, 2, 1));
@@ -740,7 +737,6 @@ CarrotPanel::CarrotPanel(QWidget* parent) : QWidget(parent) {
   dispToggles->addItem(new CValueControl("ShowRouteInfo", "路线信息", "0:无,1:显示", 0, 1, 1));
   dispToggles->addItem(new CValueControl("ShowPlotMode", "调试图表", "", 0, 10, 1));
   dispToggles->addItem(new CValueControl("ShowCustomBrightness", "亮度比例", "", 0, 100, 10));
-
   //dispToggles->addItem(new CValueControl("ShowHudMode", "Display Mode", "0:Frog,1:APilot,2:Bottom,3:Top,4:Left,5:Left-Bottom", 0, 5, 1));
   //dispToggles->addItem(new CValueControl("ShowSteerRotate", "Handle rotate", "0:None,1:Rotate", 0, 1, 1));
   //dispToggles->addItem(new CValueControl("ShowAccelRpm", "Accel meter", "0:None,1:Display,1:Accel+RPM", 0, 2, 1));
@@ -759,7 +755,6 @@ CarrotPanel::CarrotPanel(QWidget* parent) : QWidget(parent) {
   pathToggles->addItem(new CValueControl("ShowPathColorLane", "轨迹颜色：有车道线", "(+10:描边)0:红,1:橙,2:黄,3:绿,4:蓝,5:靛青,6:紫,7:棕,8:白,9:黑", 0, 19, 1));
   pathToggles->addItem(new CValueControl("ShowPathWidth", "轨迹宽度比例(100%)", "", 10, 200, 10));
 
-
   startToggles = new ListWidget(this);
   QString selected = QString::fromStdString(Params().get("CarSelected3"));
   QPushButton* selectCarBtn = new QPushButton(selected.length() > 1 ? selected : tr("选择您的车辆"));
@@ -777,7 +772,6 @@ CarrotPanel::CarrotPanel(QWidget* parent) : QWidget(parent) {
   connect(selectCarBtn, &QPushButton::clicked, [=]() {
     QString selected = QString::fromStdString(Params().get("CarSelected3"));
 
-
     QStringList all_items = get_list((QString::fromStdString(Params().getParamPath()) + "/SupportedCars").toStdString().c_str());
     all_items.append(get_list((QString::fromStdString(Params().getParamPath()) + "/SupportedCars_gm").toStdString().c_str()));
     all_items.append(get_list((QString::fromStdString(Params().getParamPath()) + "/SupportedCars_toyota").toStdString().c_str()));
@@ -794,7 +788,7 @@ CarrotPanel::CarrotPanel(QWidget* parent) : QWidget(parent) {
       }
     }
 
-        QStringList manufacturers = car_groups.keys();
+    QStringList manufacturers = car_groups.keys();
     QString selectedManufacturer = MultiOptionDialog::getSelection("选择厂商", manufacturers, manufacturers.isEmpty() ? "" : manufacturers.first(), this);
 
     if (!selectedManufacturer.isEmpty()) {
@@ -817,7 +811,6 @@ CarrotPanel::CarrotPanel(QWidget* parent) : QWidget(parent) {
       }
     }
   });
-
 
   startToggles->addItem(selectCarBtn);
   startToggles->addItem(new CValueControl("HyundaiCameraSCC", "现代: 摄像头SCC", "1:连接SCC的CAN线到摄像头, 2:同步定速状态, 3:原厂长控", 0, 3, 1));
@@ -868,7 +861,6 @@ CarrotPanel::CarrotPanel(QWidget* parent) : QWidget(parent) {
   speedToggles->addItem(new CValueControl("AutoTurnControlSpeedTurn", "ATC: 转弯速度(20)", "0:无, 转弯速度", 0, 100, 5));
   speedToggles->addItem(new CValueControl("AutoTurnControlTurnEnd", "ATC: 转弯控制距离时间(6)", "距离=速度*时间", 0, 30, 1));
   speedToggles->addItem(new CValueControl("AutoTurnMapChange", "ATC 自动地图切换(0)", "", 0, 1, 1));
-
 
   toggles_layout->addWidget(cruiseToggles);
   toggles_layout->addWidget(latLongToggles);
