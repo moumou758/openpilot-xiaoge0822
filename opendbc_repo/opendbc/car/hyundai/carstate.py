@@ -16,6 +16,7 @@ from openpilot.common.params import Params
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
+
 ButtonType = structs.CarState.ButtonEvent.Type
 
 PREV_BUTTON_SAMPLES = 8
