@@ -13,6 +13,8 @@ from opendbc.car.interfaces import CarStateBase
 
 from openpilot.common.params import Params
 
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 ButtonType = structs.CarState.ButtonEvent.Type
 
