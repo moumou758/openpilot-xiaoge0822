@@ -548,7 +548,7 @@ class RadarD:
 
       # cut-in
       #cut_in_width = 3.0 #3.4  # 끼어들기 차폭
-      if left_y < - y_with_vel < right_y and (3 < c.dRel < 20 and c.vLead > 4 and c.cnt > int(2.0/DT_MDL) and  dy * c.yvLead_filtered < 0):
+      if left_y < - y_with_vel < right_y and (3 < c.dRel < 20 and c.vLead > 4 and c.cnt > int(2.0/DT_MDL) and  c.yRel_filtered * c.yvLead_filtered < 0):
       #if abs(dy_with_vel) < cut_in_width / 2 and (3 < c.dRel < 20 and c.vLead > 4 and c.cnt > int(2.0/DT_MDL) and  dy * c.yvLead_filtered < 0):
         if not self.leadCutIn['status'] or c.dRel < self.leadCutIn['dRel']:
           c.cut_in_count += 1
