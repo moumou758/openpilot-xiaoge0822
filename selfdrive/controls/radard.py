@@ -126,7 +126,7 @@ def match_vision_to_track(v_ego: float, lead: capnp._DynamicStructReader, tracks
 
 
   # 끼어드는차량을 간헐적 멀리있는 차량으로 검출하는 문제가 있음..
-  y_gate  = min(1.5,  lead.yStd[0] * 2.0)
+  y_gate  = min(1.7,  lead.yStd[0] * 2.0)
   v_gate  = max(5.0,  lead.vStd[0] * 2.0)
 
   yv_candidates = [
@@ -144,19 +144,16 @@ def match_vision_to_track(v_ego: float, lead: capnp._DynamicStructReader, tracks
 
   y_sane = abs(best_track.yRel + lead.y[0]) < y_gate
 
-  if dist_sane:
+  if dist_sane and y_sane:
     if vel_sane and lead.prob < 0.5:  # 근처에 달리고 있는차를 오감지 했을수 있음
       best_track = None
     elif not vel_sane or lead.prob < 0.5:  # 속도가 안맞거나 희미하게 감지된 차인경우
-      if not y_sane:
-        best_track.is_stopped_car_count = max(0, best_track.is_stopped_car_count - 1)
-        best_track = None
-      else:
-        if best_track.selected_count < 1: # 이전에 선택된 경우에는 그냥 통과함.
-          best_track.is_stopped_car_count += 1
-          if best_track.is_stopped_car_count < int(2.0/DT_MDL):
-            best_track = None
+      if best_track.selected_count < 1: # 이전에 선택된 경우에는 그냥 통과함.
+        best_track.is_stopped_car_count += 1
+        if best_track.is_stopped_car_count < int(2.0/DT_MDL):
+          best_track = None
   else:
+    best_track.is_stopped_car_count = max(0, best_track.is_stopped_car_count - 1)
     best_track = None
 
   for c in tracks.values():
