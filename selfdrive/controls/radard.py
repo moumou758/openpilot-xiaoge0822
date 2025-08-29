@@ -531,14 +531,15 @@ class RadarD:
       left_y = np.interp(c.dRel, lane_xs, left_ys)
       right_y = np.interp(c.dRel, lane_xs, right_ys)
 
+      y_rel_neg = - c.yRel
       # center
-      if left_y < c.yRel < right_y:
+      if left_y < y_rel_neg < right_y:
         if c.cnt > 6:
           ld = c.get_RadarState(lead_msg.prob, float(-lead_msg.y[0]))
           center_list.append(ld)
 
       # left/right
-      elif c.yRel < left_y:
+      elif y_rel_neg < left_y:
         ld = c.get_RadarState(0, 0)
         left_list.append(ld)
       else:
@@ -547,7 +548,7 @@ class RadarD:
 
       # cut-in
       #cut_in_width = 3.0 #3.4  # 끼어들기 차폭
-      if left_y < y_with_vel < right_y and (3 < c.dRel < 20 and c.vLead > 4 and c.cnt > int(2.0/DT_MDL) and  dy * c.yvLead_filtered < 0):
+      if left_y < - y_with_vel < right_y and (3 < c.dRel < 20 and c.vLead > 4 and c.cnt > int(2.0/DT_MDL) and  dy * c.yvLead_filtered < 0):
       #if abs(dy_with_vel) < cut_in_width / 2 and (3 < c.dRel < 20 and c.vLead > 4 and c.cnt > int(2.0/DT_MDL) and  dy * c.yvLead_filtered < 0):
         if not self.leadCutIn['status'] or c.dRel < self.leadCutIn['dRel']:
           c.cut_in_count += 1
