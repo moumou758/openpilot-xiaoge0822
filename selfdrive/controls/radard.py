@@ -50,6 +50,8 @@ class Track:
     self.yvLead = pt.yvRel
     
     self.measured = pt.measured   # measured or estimate
+    if not self.measured:
+      self.cnt = 0
 
     if ready:
       self.dPath = self.yRel + np.interp(self.dRel, md.position.x, md.position.y)
@@ -447,10 +449,11 @@ class RadarD:
         self.vision_tracks[0].update(leads_v3[0], model_v_ego, self.v_ego, sm['modelV2'])
         self.vision_tracks[1].update(leads_v3[1], model_v_ego, self.v_ego, sm['modelV2'])
 
-      self.radar_state.leadOne, self.radar_detected = self.get_lead(sm['carState'], sm['modelV2'], self.tracks, 0, leads_v3[0], model_v_ego, low_speed_override=False)
-      self.radar_state.leadTwo, _ = self.get_lead(sm['carState'], sm['modelV2'], self.tracks, 1, leads_v3[1], model_v_ego, low_speed_override=False)
+      alive_tracks = {tid: trk for tid, trk in self.tracks.items() if trk.measured }
+      self.radar_state.leadOne, self.radar_detected = self.get_lead(sm['carState'], sm['modelV2'], alive_tracks, 0, leads_v3[0], model_v_ego, low_speed_override=False)
+      self.radar_state.leadTwo, _ = self.get_lead(sm['carState'], sm['modelV2'], alive_tracks, 1, leads_v3[1], model_v_ego, low_speed_override=False)
 
-      self.compute_leads(self.v_ego, self.tracks, sm['modelV2'], lane_width=3.2, model_v_ego=model_v_ego)
+      self.compute_leads(self.v_ego, alive_tracks, sm['modelV2'], lane_width=3.2, model_v_ego=model_v_ego)
       self._pick_lead_one_from_state()
 
   def publish(self, pm: messaging.PubMaster):
@@ -487,7 +490,7 @@ class RadarD:
     if track is not None:
       lead_dict = track.get_RadarState(lead_msg.prob, self.vision_tracks[0].yRel)
       radar = True
-    elif (track is None) and ready and (lead_msg.prob > .8):
+    elif (track is None) and ready and (lead_msg.prob > .5):
         lead_dict = self.vision_tracks[index].get_lead(md)
 
     if self.enable_corner_radar > 0:
