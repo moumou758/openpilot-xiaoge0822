@@ -81,7 +81,7 @@ class RadarInterface(RadarInterfaceBase):
     self.vRel_last = 0
     self.dRel_last = 0
 
-    radar_msg_count = radar_msg_count * 2 if self.radar_group1 else radar_msg_count
+    radar_msg_count = self.radar_msg_count * 2 if self.radar_group1 else self.radar_msg_count
     for track_id in range(radar_msg_count):
       self.pts[track_id] = structs.RadarData.RadarPoint()
       self.pts[track_id].measured = False
