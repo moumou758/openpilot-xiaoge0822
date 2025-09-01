@@ -241,9 +241,9 @@ class MyTrack:
         
   def update(self, radar_point):
     if not radar_point.measured:
+      if self.cnt > 0:
+        self.init_point(radar_point)
       self.cnt = 0
-    elif self.cnt == 0:
-      self.init_point(radar_point)
     else:      
       self.vLead = radar_point.vLead
       """
