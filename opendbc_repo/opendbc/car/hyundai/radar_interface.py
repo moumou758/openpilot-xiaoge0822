@@ -141,7 +141,7 @@ class RadarInterface(RadarInterfaceBase):
       else:
         valid = msg['STATE'] in (3, 4)
 
-      self.pts[t_id].measured = valid
+      self.pts[t_id].measured = bool(valid)
       if not valid:
         self.pts[t_id].dRel = 0
         self.pts[t_id].yRel = 0
@@ -179,7 +179,7 @@ class RadarInterface(RadarInterfaceBase):
         msg = self.rcp_tracks.vl[f"RADAR_TRACK_{addr:x}"]
 
         valid = msg['VALID_CNT2'] > 10
-        self.pts[t_id].measured = valid
+        self.pts[t_id].measured = bool(valid)
         if not valid:
           self.pts[t_id].dRel = 0
           self.pts[t_id].yRel = 0
@@ -206,7 +206,7 @@ class RadarInterface(RadarInterfaceBase):
       new_pts = abs(dRel - self.dRel_last) > 3 or abs(vRel - self.vRel_last) > 1
       vLead = vRel + self.v_ego
       valid = 0 < dRel < 150 and not new_pts #cpt["SCC_CONTROL"]['OBJ_STATUS'] and dRel < 150
-      self.pts[t_id].measured = valid
+      self.pts[t_id].measured = bool(valid)
       if not valid:
         self.pts[t_id].dRel = 0
         self.pts[t_id].yRel = 0
@@ -227,7 +227,7 @@ class RadarInterface(RadarInterfaceBase):
       new_pts = abs(dRel - self.dRel_last) > 3 or abs(vRel - self.vRel_last) > 1
       vLead = vRel + self.v_ego
       valid = cpt["SCC11"]['ACC_ObjStatus'] and dRel < 150 and not new_pts
-      self.pts[t_id].measured = valid
+      self.pts[t_id].measured = bool(valid)
       if not valid:
         self.pts[t_id].dRel = 0
         self.pts[t_id].yRel = 0
