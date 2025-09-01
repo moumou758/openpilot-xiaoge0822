@@ -36,6 +36,7 @@ class Track:
     self.is_stopped_car_count = 0
     self.selected_count = 0
     self.cut_in_count = 0
+    self.measured = False
 
   def update(self, md, pt, ready, radar_reaction_factor):
 
@@ -471,9 +472,7 @@ class RadarD:
     ready = self.ready
 
     ## backup SCC radar(0, 1 trackid)
-    track_scc = tracks.get(0)
-    if track_scc is None:
-      track_scc = tracks.get(1)
+    track_scc = tracks.pop(0, None)
 
     # Determine leads, this is where the essential logic happens
     if len(tracks) > 0 and ready and lead_msg.prob > .3:
@@ -482,7 +481,7 @@ class RadarD:
       track = None
 
     if self.enable_radar_tracks in [-1, 2]:  
-      if track_scc is not None and track is None:
+      if track is None and track_scc is not None and track_scc.measured:
         track = track_scc
 
     lead_dict = {'status': False}
