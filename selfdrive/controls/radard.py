@@ -583,7 +583,7 @@ class RadarD:
     )
     if self.lane_line_available:
       self.leadCenter = min(
-          (ld for ld in center_list if ld['vLead'] > 5 and ld['radar'] and abs(ld['yRel']) < 5.0),
+          (ld for ld in center_list if ld['vLead'] > 5 and ld['radar'] and abs(ld['yRel']) < 5.0 and ld['dRel'] > 3.5),
           key=lambda d: d['dRel'],
           default={'status': False}
       )
