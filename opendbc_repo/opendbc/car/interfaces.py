@@ -223,8 +223,6 @@ class MyTrack:
     self.cnt = 0
 
   def init_point(self, radar_point):
-    if self.cnt == 0:
-      return
     self.dRel = radar_point.dRel
     self.vRel = radar_point.vRel
     self.yRel = radar_point.yRel
