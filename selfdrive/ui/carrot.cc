@@ -676,7 +676,7 @@ protected:
         return true;
 	};
     bool isLeadSCC() {
-        return radarTrackId < 2;
+        return radarTrackId < 1;
     }
     bool isRadarDetected() {
         return radarTrackId >= 0;

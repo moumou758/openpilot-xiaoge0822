@@ -475,7 +475,7 @@ class RadarD:
     ready = self.ready
 
     ## backup SCC radar(0, 1 trackid)
-    if self.enable_radar_tracks == 0:
+    if self.enable_radar_tracks <= 0:
       track_scc = tracks.get(0)
     else:
       track_scc = tracks.pop(0, None)
