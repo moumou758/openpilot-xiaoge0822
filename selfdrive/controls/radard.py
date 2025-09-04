@@ -535,7 +535,7 @@ class RadarD:
     for c in tracks.values():
       dy = c.yRel_filtered + np.interp(c.dRel, md_x, md_y) # + c.yvLead_filtered * self.radar_lat_factor
       dy_with_vel = dy + c.yvLead_filtered * self.radar_lat_factor
-      y_with_vel = c.yRel_filtered + c.yvLead_filtered * self.radar_lat_factor
+      y_with_vel_neg = -(c.yRel_filtered + c.yvLead_filtered * self.radar_lat_factor)
       left_y = np.interp(c.dRel, lane_xs, left_ys)
       right_y = np.interp(c.dRel, lane_xs, right_ys)
 
@@ -556,14 +556,18 @@ class RadarD:
 
       # cut-in
       #cut_in_width = 3.0 #3.4  # 끼어들기 차폭
-      if self.lane_line_available and left_y < - y_with_vel < right_y and (3 < c.dRel < 20 and c.vLead > 4 and c.cnt > int(2.0/DT_MDL) and  c.yRel_filtered * c.yvLead_filtered < 0):
-      #if abs(dy_with_vel) < cut_in_width / 2 and (3 < c.dRel < 20 and c.vLead > 4 and c.cnt > int(2.0/DT_MDL) and  dy * c.yvLead_filtered < 0):
-        if not self.leadCutIn['status'] or c.dRel < self.leadCutIn['dRel']:
-          c.cut_in_count += 1
+      #if self.lane_line_available and left_y < y_with_vel_neg < right_y and (3 < c.dRel < 20 and c.vLead > 4 and c.cnt > int(2.0/DT_MDL) and  c.yRel_filtered * c.yvLead_filtered < 0):
+      if self.lane_line_available and 3 < c.dRel < 50 and c.vLead > 4 and c.cnt > int(2.0/DT_MDL):
+        if (y_rel_neg < left_y and y_with_vel_neg > left_y) or (y_rel_neg > right_y and y_with_vel_neg < right_y):
+          if not self.leadCutIn['status'] or c.dRel < self.leadCutIn['dRel']:
+            c.cut_in_count += 1
+          else:
+            c.cut_in_count = 0
+            
+          if c.cut_in_count > int(0.5/DT_MDL):
+            self.leadCutIn = c.get_RadarState(lead_msg.prob)
         else:
           c.cut_in_count = 0
-        if c.cut_in_count > int(0.5/DT_MDL):
-          self.leadCutIn = c.get_RadarState(lead_msg.prob)
       else:
         c.cut_in_count = 0
         
