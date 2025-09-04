@@ -487,7 +487,7 @@ class RadarD:
       track = None
 
     if track is None and track_scc is not None and track_scc.measured:
-      if self.enable_radar_tracks in [-1, 2] or model_v_ego < 5 or track_scc.vLead < 3.0:
+      if self.enable_radar_tracks in [-1, 2] or model_v_ego < 5 or track_scc.vLead < 5.0:
         track = track_scc
 
     lead_dict = {'status': False}
