@@ -91,7 +91,7 @@ def register(show_spinner=False) -> str | None:
         backoff = min(backoff + 1, 15)
         time.sleep(backoff)
 
-      if time.monotonic() - start_time > 120:
+      if time.monotonic() - start_time > 15:
         cloudlog.error("pilotauth timed out; continuing as UNREGISTERED")
         dongle_id = UNREGISTERED_DONGLE_ID
         break
