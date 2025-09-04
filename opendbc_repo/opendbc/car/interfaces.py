@@ -242,7 +242,7 @@ class MyTrack:
       if self.cnt > 0:
         self.init_point(radar_point)
       self.cnt = 0
-    elif self.cnt == 1:
+    elif self.cnt < 1:
       self.init_point(radar_point)
       self.cnt += 1
     else:      
