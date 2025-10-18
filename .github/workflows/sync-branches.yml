@@ -52,5 +52,5 @@ jobs:
           git push origin dragonpilot-pre-build --force
 
           # frogpilot FrogPilot
-          git checkout -B frogpilot FrogPilot
+          git checkout -B frogpilot frogpilot/FrogPilot
           git push origin frogpilot --force
