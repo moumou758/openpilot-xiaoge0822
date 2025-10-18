@@ -32,9 +32,9 @@ jobs:
           git remote add dragonpilot https://github.com/dragonpilot-community/dragonpilot.git
           git fetch dragonpilot pre-build --no-tags
           
-          # FrogPilot main
+          # FrogPilot FrogPilot
           git remote add frogpilot https://github.com/FrogAi/FrogPilot.git
-          git fetch frogpilot main --no-tags
+          git fetch frogpilot FrogPilot --no-tags
 
       # 3. Push branches to your repository
       - name: Push branches to your repository
@@ -51,6 +51,6 @@ jobs:
           git checkout -B dragonpilot-pre-build dragonpilot/pre-build
           git push origin dragonpilot-pre-build --force
 
-          # frogpilot main
-          git checkout -B frogpilot-main frogpilot/main
-          git push origin frogpilot-main --force
+          # frogpilot FrogPilot
+          git checkout -B frogpilot FrogPilot
+          git push origin frogpilot --force
